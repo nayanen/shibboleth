@@ -1,0 +1,38 @@
+---
+driver:
+  name: proxy
+  host: localhost
+  reset_command: "exit 0"
+  port: 5985
+  username: <%= ENV["machine_user"] %>
+  password: <%= ENV["machine_pass"] %>
+
+provisioner:
+  name: chef_zero
+  deprecations_as_errors: false
+  product_name: chef
+  require_omnibus: true
+  channel: current # Can be removed when Chef 14.4 is released
+
+platforms:
+  - name: windows-2012R2
+
+verifier:
+  name: inspec
+
+suites:
+  - name: feature
+    run_list:
+      - recipe[test::feature]
+  - name: http_acl
+    run_list:
+      - recipe[test::http_acl]
+  - name: font
+    run_list:
+      - recipe[test::font]
+  - name: pagefile
+    run_list:
+      - recipe[test::pagefile]
+  - name: user_privilege
+    run_list:
+      - recipe[test::user_privilege]
